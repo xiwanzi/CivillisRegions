@@ -7,7 +7,7 @@ import net.minecraftforge.network.NetworkRegistry;
 import net.minecraftforge.network.simple.SimpleChannel;
 
 public final class ModNetwork {
-    private static final String PROTOCOL = "1";
+    private static final String PROTOCOL = "2";
 
     public static final SimpleChannel CHANNEL = NetworkRegistry.ChannelBuilder
             .named(new ResourceLocation(CivilCustomRegionsMod.MOD_ID, "main"))
@@ -25,6 +25,11 @@ public final class ModNetwork {
                 .encoder(CustomRegionNoticePacket::encode)
                 .decoder(CustomRegionNoticePacket::decode)
                 .consumerMainThread(CustomRegionNoticePacket::handle)
+                .add();
+        CHANNEL.messageBuilder(CustomRegionSyncPacket.class, nextId++, NetworkDirection.PLAY_TO_CLIENT)
+                .encoder(CustomRegionSyncPacket::encode)
+                .decoder(CustomRegionSyncPacket::decode)
+                .consumerMainThread(CustomRegionSyncPacket::handle)
                 .add();
     }
 }

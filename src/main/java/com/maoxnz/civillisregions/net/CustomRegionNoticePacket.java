@@ -12,10 +12,16 @@ import java.util.function.Supplier;
 public final class CustomRegionNoticePacket {
     private final NoticeKind kind;
     private final String text;
+    private final int color;
 
     public CustomRegionNoticePacket(NoticeKind kind, String text) {
+        this(kind, text, -1);
+    }
+
+    public CustomRegionNoticePacket(NoticeKind kind, String text, int color) {
         this.kind = kind;
         this.text = text == null ? "" : text;
+        this.color = color;
     }
 
     public NoticeKind kind() {
@@ -26,20 +32,25 @@ public final class CustomRegionNoticePacket {
         return text;
     }
 
+    public int color() {
+        return color;
+    }
+
     public static void encode(CustomRegionNoticePacket packet, FriendlyByteBuf buf) {
         buf.writeEnum(packet.kind);
         buf.writeUtf(packet.text, 32767);
+        buf.writeInt(packet.color);
     }
 
     public static CustomRegionNoticePacket decode(FriendlyByteBuf buf) {
-        return new CustomRegionNoticePacket(buf.readEnum(NoticeKind.class), buf.readUtf(32767));
+        return new CustomRegionNoticePacket(buf.readEnum(NoticeKind.class), buf.readUtf(32767), buf.readInt());
     }
 
     public static void handle(CustomRegionNoticePacket packet, Supplier<NetworkEvent.Context> contextSupplier) {
         NetworkEvent.Context context = contextSupplier.get();
         context.enqueueWork(() -> DistExecutor.unsafeRunWhenOn(
                 Dist.CLIENT,
-                () -> () -> CustomRegionNoticeHud.enqueue(packet.kind, packet.text)));
+                () -> () -> CustomRegionNoticeHud.enqueue(packet.kind, packet.text, packet.color)));
         context.setPacketHandled(true);
     }
 }

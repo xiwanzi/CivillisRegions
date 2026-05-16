@@ -29,3 +29,20 @@ mandatory = true
 versionRange = "[${civillis_version},)"
 ordering = "AFTER"
 side = "BOTH"
+
+[[dependencies.${mod_id}]]
+modId = "ftblibrary"
+mandatory = false
+versionRange = "[2001.2.10,)"
+ordering = "AFTER"
+side = "BOTH"
+
+[[dependencies.${mod_id}]]
+modId = "ftbchunks"
+mandatory = false
+versionRange = "[2001.3.6,)"
+ordering = "AFTER"
+side = "BOTH"
+
+[[mixins]]
+config = "civil_custom_regions.mixins.json"

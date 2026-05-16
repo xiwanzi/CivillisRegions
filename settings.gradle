@@ -6,4 +6,4 @@ pluginManagement {
     }
 }
 
-rootProject.name = 'civil_custom_regions'
+rootProject.name = 'civillis_regions'

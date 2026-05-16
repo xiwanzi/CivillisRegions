@@ -15,6 +15,11 @@ public final class ClientHudEvents {
     @SubscribeEvent
     public static void onClientTick(TickEvent.ClientTickEvent event) {
         if (event.phase == TickEvent.Phase.END) {
+            try {
+                FtbChunkBandSubscriptionClient.tick();
+            } catch (LinkageError | RuntimeException ignored) {
+                // Optional map overlay support must not break the custom region HUD queue.
+            }
             CustomRegionNoticeHud.tick();
         }
     }

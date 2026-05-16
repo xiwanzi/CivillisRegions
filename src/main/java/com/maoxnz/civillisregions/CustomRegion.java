@@ -12,6 +12,10 @@ public final class CustomRegion {
     private final int maxChunkZ;
     private final String enterText;
     private final String leaveText;
+    private final String displayName;
+    private final int overlayColor;
+    private final int enterColor;
+    private final int leaveColor;
 
     public CustomRegion(
             String id,
@@ -22,6 +26,34 @@ public final class CustomRegion {
             int maxChunkZ,
             String enterText,
             String leaveText) {
+        this(
+                id,
+                dimension,
+                minChunkX,
+                maxChunkX,
+                minChunkZ,
+                maxChunkZ,
+                enterText,
+                leaveText,
+                id,
+                -1,
+                -1,
+                -1);
+    }
+
+    public CustomRegion(
+            String id,
+            ResourceLocation dimension,
+            int minChunkX,
+            int maxChunkX,
+            int minChunkZ,
+            int maxChunkZ,
+            String enterText,
+            String leaveText,
+            String displayName,
+            int overlayColor,
+            int enterColor,
+            int leaveColor) {
         this.id = id;
         this.dimension = dimension;
         this.minChunkX = Math.min(minChunkX, maxChunkX);
@@ -30,6 +62,10 @@ public final class CustomRegion {
         this.maxChunkZ = Math.max(minChunkZ, maxChunkZ);
         this.enterText = enterText == null ? "" : enterText;
         this.leaveText = leaveText == null ? "" : leaveText;
+        this.displayName = displayName == null || displayName.isBlank() ? id : displayName;
+        this.overlayColor = overlayColor;
+        this.enterColor = enterColor;
+        this.leaveColor = leaveColor;
     }
 
     public String id() {
@@ -64,6 +100,22 @@ public final class CustomRegion {
         return leaveText;
     }
 
+    public String displayName() {
+        return displayName;
+    }
+
+    public int overlayColor() {
+        return overlayColor;
+    }
+
+    public int enterColor() {
+        return enterColor;
+    }
+
+    public int leaveColor() {
+        return leaveColor;
+    }
+
     public boolean hasEnterText() {
         return !enterText.isBlank();
     }
@@ -81,6 +133,10 @@ public final class CustomRegion {
     }
 
     public CustomRegion withMessages(String newEnterText, String newLeaveText) {
+        return withMessages(newEnterText, newLeaveText, enterColor, leaveColor);
+    }
+
+    public CustomRegion withMessages(String newEnterText, String newLeaveText, int newEnterColor, int newLeaveColor) {
         return new CustomRegion(
                 id,
                 dimension,
@@ -89,7 +145,27 @@ public final class CustomRegion {
                 minChunkZ,
                 maxChunkZ,
                 newEnterText,
-                newLeaveText);
+                newLeaveText,
+                displayName,
+                overlayColor,
+                newEnterColor,
+                newLeaveColor);
+    }
+
+    public CustomRegion withOverlay(String newDisplayName, int newOverlayColor) {
+        return new CustomRegion(
+                id,
+                dimension,
+                minChunkX,
+                maxChunkX,
+                minChunkZ,
+                maxChunkZ,
+                enterText,
+                leaveText,
+                newDisplayName,
+                newOverlayColor,
+                enterColor,
+                leaveColor);
     }
 
     public CompoundTag save() {
@@ -102,6 +178,10 @@ public final class CustomRegion {
         tag.putInt("maxChunkZ", maxChunkZ);
         tag.putString("enterText", enterText);
         tag.putString("leaveText", leaveText);
+        tag.putString("displayName", displayName);
+        tag.putInt("overlayColor", overlayColor);
+        tag.putInt("enterColor", enterColor);
+        tag.putInt("leaveColor", leaveColor);
         return tag;
     }
 
@@ -116,6 +196,10 @@ public final class CustomRegion {
                 tag.getInt("minChunkZ"),
                 tag.getInt("maxChunkZ"),
                 tag.getString("enterText"),
-                tag.getString("leaveText"));
+                tag.getString("leaveText"),
+                tag.contains("displayName") ? tag.getString("displayName") : id,
+                tag.contains("overlayColor") ? tag.getInt("overlayColor") : -1,
+                tag.contains("enterColor") ? tag.getInt("enterColor") : -1,
+                tag.contains("leaveColor") ? tag.getInt("leaveColor") : -1);
     }
 }

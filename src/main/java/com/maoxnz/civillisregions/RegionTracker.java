@@ -1,6 +1,7 @@
 package com.maoxnz.civillisregions;
 
 import com.maoxnz.civillisregions.net.CustomRegionNoticePacket;
+import com.maoxnz.civillisregions.net.CustomRegionSyncPacket;
 import com.maoxnz.civillisregions.net.ModNetwork;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
@@ -47,6 +48,20 @@ public final class RegionTracker {
         PLAYER_STATES.remove(event.getEntity().getUUID());
     }
 
+    @SubscribeEvent
+    public static void onPlayerLoggedIn(PlayerEvent.PlayerLoggedInEvent event) {
+        if (event.getEntity() instanceof ServerPlayer player) {
+            sendSnapshot(player, CustomRegionSavedData.get(player.getServer()));
+        }
+    }
+
+    @SubscribeEvent
+    public static void onPlayerChangedDimension(PlayerEvent.PlayerChangedDimensionEvent event) {
+        if (event.getEntity() instanceof ServerPlayer player) {
+            sendSnapshot(player, CustomRegionSavedData.get(player.getServer()));
+        }
+    }
+
     private static void tickPlayer(ServerPlayer player, CustomRegionSavedData data, long revision) {
         UUID playerId = player.getUUID();
         ResourceLocation dimension = player.level().dimension().location();
@@ -55,6 +70,10 @@ public final class RegionTracker {
         Set<String> activeNow = matchingRegionIds(data, dimension, chunkX, chunkZ);
 
         PlayerRegionState old = PLAYER_STATES.get(playerId);
+        if (old == null || old.dataRevision != revision || !old.dimension.equals(dimension)) {
+            sendSnapshot(player, data);
+        }
+
         if (old == null || old.dataRevision != revision) {
             PLAYER_STATES.put(playerId, new PlayerRegionState(dimension, chunkX, chunkZ, activeNow, revision));
             return;
@@ -98,21 +117,35 @@ public final class RegionTracker {
         for (String id : exited) {
             CustomRegion region = data.getRegion(id);
             if (region != null && region.hasLeaveText()) {
-                send(player, NoticeKind.LEAVE, region.leaveText());
+                send(player, NoticeKind.LEAVE, region.leaveText(), region.leaveColor());
             }
         }
         for (String id : entered) {
             CustomRegion region = data.getRegion(id);
             if (region != null && region.hasEnterText()) {
-                send(player, NoticeKind.ENTER, region.enterText());
+                send(player, NoticeKind.ENTER, region.enterText(), region.enterColor());
             }
         }
     }
 
-    private static void send(ServerPlayer player, NoticeKind kind, String text) {
-        ModNetwork.CHANNEL.send(
-                PacketDistributor.PLAYER.with(() -> player),
-                new CustomRegionNoticePacket(kind, text));
+    private static void send(ServerPlayer player, NoticeKind kind, String text, int color) {
+        try {
+            ModNetwork.CHANNEL.send(
+                    PacketDistributor.PLAYER.with(() -> player),
+                    new CustomRegionNoticePacket(kind, text, color));
+        } catch (LinkageError | RuntimeException ignored) {
+            // Keep the region state machine alive even if a client has a mismatched addon jar.
+        }
+    }
+
+    private static void sendSnapshot(ServerPlayer player, CustomRegionSavedData data) {
+        try {
+            ModNetwork.CHANNEL.send(
+                    PacketDistributor.PLAYER.with(() -> player),
+                    new CustomRegionSyncPacket(data.sortedRegions()));
+        } catch (LinkageError | RuntimeException ignored) {
+            // Snapshot sync is optional for map overlays and must not block enter/leave notices.
+        }
     }
 
     private record PlayerRegionState(

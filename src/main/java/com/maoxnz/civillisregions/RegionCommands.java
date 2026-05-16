@@ -39,7 +39,42 @@ public final class RegionCommands {
                                                         ctx.getSource(),
                                                         StringArgumentType.getString(ctx, "id"),
                                                         StringArgumentType.getString(ctx, "enterText"),
-                                                        StringArgumentType.getString(ctx, "leaveText")))))))
+                                                        StringArgumentType.getString(ctx, "leaveText"),
+                                                        null,
+                                                        null))
+                                                .then(argument("enterColor", StringArgumentType.word())
+                                                        .executes(ctx -> edit(
+                                                                ctx.getSource(),
+                                                                StringArgumentType.getString(ctx, "id"),
+                                                                StringArgumentType.getString(ctx, "enterText"),
+                                                                StringArgumentType.getString(ctx, "leaveText"),
+                                                                StringArgumentType.getString(ctx, "enterColor"),
+                                                                StringArgumentType.getString(ctx, "enterColor")))
+                                                        .then(argument("leaveColor", StringArgumentType.word())
+                                                                .executes(ctx -> edit(
+                                                                        ctx.getSource(),
+                                                                        StringArgumentType.getString(ctx, "id"),
+                                                                        StringArgumentType.getString(ctx, "enterText"),
+                                                                        StringArgumentType.getString(ctx, "leaveText"),
+                                                                        StringArgumentType.getString(ctx, "enterColor"),
+                                                                        StringArgumentType.getString(ctx, "leaveColor")))))))))
+                .then(literal("overlay")
+                        .then(argument("id", StringArgumentType.word())
+                                .suggests((ctx, builder) -> SharedSuggestionProvider.suggest(
+                                        CustomRegionSavedData.get(ctx.getSource().getServer()).sortedIds(),
+                                        builder))
+                                .then(argument("displayName", StringArgumentType.string())
+                                        .executes(ctx -> overlay(
+                                                ctx.getSource(),
+                                                StringArgumentType.getString(ctx, "id"),
+                                                StringArgumentType.getString(ctx, "displayName"),
+                                                null))
+                                        .then(argument("color", StringArgumentType.word())
+                                                .executes(ctx -> overlay(
+                                                        ctx.getSource(),
+                                                        StringArgumentType.getString(ctx, "id"),
+                                                        StringArgumentType.getString(ctx, "displayName"),
+                                                        StringArgumentType.getString(ctx, "color")))))))
                 .then(literal("list")
                         .executes(ctx -> list(ctx.getSource())))
                 .then(literal("delete")
@@ -88,7 +123,13 @@ public final class RegionCommands {
         return 1;
     }
 
-    private static int edit(CommandSourceStack source, String id, String enterText, String leaveText) {
+    private static int edit(
+            CommandSourceStack source,
+            String id,
+            String enterText,
+            String leaveText,
+            String enterColorText,
+            String leaveColorText) {
         CustomRegionSavedData data = CustomRegionSavedData.get(source.getServer());
         CustomRegion existing = data.getRegion(id);
         if (existing == null) {
@@ -96,9 +137,40 @@ public final class RegionCommands {
             return 0;
         }
 
-        data.putRegion(existing.withMessages(enterText, leaveText));
+        int enterColor = parseOptionalColor(source, enterColorText);
+        if (enterColorText != null && enterColor == RegionColors.UNSET) {
+            return 0;
+        }
+        int leaveColor = parseOptionalColor(source, leaveColorText);
+        if (leaveColorText != null && leaveColor == RegionColors.UNSET) {
+            return 0;
+        }
+
+        data.putRegion(existing.withMessages(enterText, leaveText, enterColor, leaveColor));
         source.sendSuccess(
                 () -> Component.literal("[Civil] Updated custom region '" + id + "' notices."),
+                true);
+        return 1;
+    }
+
+    private static int overlay(CommandSourceStack source, String id, String displayName, String colorText) {
+        CustomRegionSavedData data = CustomRegionSavedData.get(source.getServer());
+        CustomRegion existing = data.getRegion(id);
+        if (existing == null) {
+            source.sendFailure(Component.literal("[Civil] Custom region '" + id + "' does not exist."));
+            return 0;
+        }
+
+        int overlayColor = parseOptionalColor(source, colorText);
+        if (colorText != null && overlayColor == RegionColors.UNSET) {
+            return 0;
+        }
+
+        data.putRegion(existing.withOverlay(displayName, overlayColor));
+        source.sendSuccess(
+                () -> Component.literal("[Civil] Updated custom region '" + id + "' overlay label '"
+                        + existing.withOverlay(displayName, overlayColor).displayName()
+                        + "' color " + RegionColors.formatHexRgb(overlayColor) + "."),
                 true);
         return 1;
     }
@@ -117,9 +189,13 @@ public final class RegionCommands {
             String status = region.hasEnterText() || region.hasLeaveText() ? "notices set" : "no notices";
             source.sendSuccess(
                     () -> Component.literal(" - " + region.id()
+                            + " label=\"" + region.displayName() + "\""
                             + " [" + region.dimension() + "]"
                             + " x=" + region.minChunkX() + ".." + region.maxChunkX()
                             + ", z=" + region.minChunkZ() + ".." + region.maxChunkZ()
+                            + ", overlay=" + RegionColors.formatHexRgb(region.overlayColor())
+                            + ", enter=" + RegionColors.formatHexRgb(region.enterColor())
+                            + ", leave=" + RegionColors.formatHexRgb(region.leaveColor())
                             + " (" + status + ")"),
                     false);
         }
@@ -141,5 +217,17 @@ public final class RegionCommands {
 
     private static int chunkFromBlock(int blockCoord) {
         return Math.floorDiv(blockCoord, 16);
+    }
+
+    private static int parseOptionalColor(CommandSourceStack source, String text) {
+        if (text == null) {
+            return RegionColors.UNSET;
+        }
+        String normalized = RegionColors.normalizeHexRgb(text);
+        if (normalized == null) {
+            source.sendFailure(Component.literal("[Civil] Color must use RRGGBB or #RRGGBB, for example d9e6ff."));
+            return RegionColors.UNSET;
+        }
+        return RegionColors.parseHexRgb(normalized);
     }
 }

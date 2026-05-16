@@ -9,7 +9,7 @@ version = mod_version
 group = mod_group_id
 
 base {
-    archivesName = 'civil-custom-regions-forge-1.20.1'
+    archivesName = 'civillis-regions-forge-1.20.1'
 }
 
 java {
@@ -54,6 +54,18 @@ dependencies {
 
     compileOnly files("libs/${civillis_file}")
     runtimeOnly files("libs/${civillis_file}")
+
+    def ftbRuntimeJars = fileTree(dir: minecraft_mods_dir, include: [
+            '*ftb-chunks-forge-2001.3.6.jar',
+            '*ftb-library-forge-2001.2.10.jar',
+            '*ftb-teams-forge-2001.3.1.jar',
+            'architectury-9.2.14-forge.jar'
+    ])
+    compileOnly ftbRuntimeJars
+    runtimeOnly ftbRuntimeJars
+
+    compileOnly 'org.spongepowered:mixin:0.8.5'
+    annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
 }
 
 tasks.named('processResources', ProcessResources).configure {
@@ -86,7 +98,8 @@ jar {
                 'Implementation-Title'    : project.name,
                 'Implementation-Version'  : project.jar.archiveVersion,
                 'Implementation-Vendor'   : mod_authors,
-                'Implementation-Timestamp': new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
+                'Implementation-Timestamp': new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
+                'MixinConfigs'            : 'civil_custom_regions.mixins.json'
         ])
     }
 }

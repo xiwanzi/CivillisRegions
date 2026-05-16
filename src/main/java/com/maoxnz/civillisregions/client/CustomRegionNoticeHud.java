@@ -25,6 +25,7 @@ public final class CustomRegionNoticeHud {
     private static final ArrayDeque<Notice> QUEUE = new ArrayDeque<>();
     private static Component currentText = Component.empty();
     private static NoticeKind currentKind = NoticeKind.ENTER;
+    private static int currentColor = -1;
     private static int ticksRemaining;
 
     private static Field civillisTicksRemainingField;
@@ -36,10 +37,14 @@ public final class CustomRegionNoticeHud {
     private CustomRegionNoticeHud() {}
 
     public static void enqueue(NoticeKind kind, String text) {
+        enqueue(kind, text, -1);
+    }
+
+    public static void enqueue(NoticeKind kind, String text, int color) {
         if (text == null || text.isBlank()) {
             return;
         }
-        QUEUE.addLast(new Notice(kind, Component.literal(text)));
+        QUEUE.addLast(new Notice(kind, Component.literal(text), color));
     }
 
     public static void tick() {
@@ -50,6 +55,7 @@ public final class CustomRegionNoticeHud {
             Notice next = QUEUE.removeFirst();
             currentKind = next.kind();
             currentText = next.text();
+            currentColor = next.color();
             ticksRemaining = FADE_IN_TICKS + HOLD_TICKS + FADE_OUT_TICKS;
         }
     }
@@ -96,7 +102,7 @@ public final class CustomRegionNoticeHud {
         int x = anchorX - textWidth / 2;
         int y = alignBaselineToHudCenterY(anchorY, textHeight, barCenterBias);
 
-        int rgb = currentKind == NoticeKind.ENTER ? ENTER_RGB : LEAVE_RGB;
+        int rgb = currentColor >= 0 ? currentColor : (currentKind == NoticeKind.ENTER ? ENTER_RGB : LEAVE_RGB);
         int color = ((int) (alpha * 255.0f) << 24) | rgb;
         guiGraphics.drawString(mc.font, currentText, x, y, color, true);
 
@@ -232,5 +238,5 @@ public final class CustomRegionNoticeHud {
         return baseline + (targetCenterY - actual);
     }
 
-    private record Notice(NoticeKind kind, Component text) {}
+    private record Notice(NoticeKind kind, Component text, int color) {}
 }
