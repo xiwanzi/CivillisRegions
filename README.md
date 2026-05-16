@@ -8,7 +8,7 @@
 [![Forge 1.20.1 Only](https://img.shields.io/badge/Forge-1.20.1%20Only-f16436?style=for-the-badge)](https://files.minecraftforge.net/net/minecraftforge/forge/)
 [![Civillis 1.3.2+](https://img.shields.io/badge/Civillis-1.3.2+-4b6cb7?style=for-the-badge)](#安装)
 [![FTB Chunks Optional](https://img.shields.io/badge/FTB%20Chunks-Optional-8e7cc3?style=for-the-badge)](#ftb-chunks-叠加层)
-[![Release](https://img.shields.io/github/v/release/xiwanzi/CivillisRegions?style=for-the-badge&label=Release)](https://github.com/xiwanzi/CivillisRegions/releases/latest)
+[![Release](https://img.shields.io/badge/Release-v1.1.0-007ec6?style=for-the-badge)](https://github.com/xiwanzi/CivillisRegions/releases/latest)
 [![Downloads](https://img.shields.io/github/downloads/xiwanzi/CivillisRegions/total?style=for-the-badge&label=Downloads)](https://github.com/xiwanzi/CivillisRegions/releases)
 [![Modrinth](https://img.shields.io/badge/Modrinth-备用下载-00af5c?style=for-the-badge)](https://modrinth.com/mod/civillisregions)
 
