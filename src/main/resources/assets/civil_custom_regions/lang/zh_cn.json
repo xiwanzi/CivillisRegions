@@ -1,0 +1,18 @@
+{
+  "configuration.civil_custom_regions.ftb_chunks_overlay": "FTB 区块叠加层",
+  "configuration.civil_custom_regions.ftb_chunks_overlay.tooltip": "在 FTB Chunks 地图上显示 Civillis 文明区块和自定义区域叠加层。",
+  "configuration.civil_custom_regions.ftb_chunks_overlay.largeMapEnabled": "大地图叠加层",
+  "configuration.civil_custom_regions.ftb_chunks_overlay.largeMapEnabled.tooltip": "在 FTB Chunks 大地图上绘制 Civillis 和自定义区域叠加层。",
+  "configuration.civil_custom_regions.ftb_chunks_overlay.minimapEnabled": "小地图叠加层",
+  "configuration.civil_custom_regions.ftb_chunks_overlay.minimapEnabled.tooltip": "在 FTB Chunks 小地图上绘制 Civillis 和自定义区域叠加层。",
+  "configuration.civil_custom_regions.ftb_chunks_overlay.defaultCustomColor": "自定义区域默认颜色",
+  "configuration.civil_custom_regions.ftb_chunks_overlay.defaultCustomColor.tooltip": "未单独设置颜色的自定义区域使用的默认 RRGGBB 或 #RRGGBB 颜色。",
+  "configuration.civil_custom_regions.ftb_chunks_overlay.civilizedHighColor": "文明区域颜色",
+  "configuration.civil_custom_regions.ftb_chunks_overlay.civilizedHighColor.tooltip": "Civillis 文明区块使用的默认 RRGGBB 或 #RRGGBB 颜色。",
+  "configuration.civil_custom_regions.ftb_chunks_overlay.civilizedHighLabel": "文明区域字样",
+  "configuration.civil_custom_regions.ftb_chunks_overlay.civilizedHighLabel.tooltip": "大地图鼠标悬停在 Civillis 文明区块上时显示的文字。",
+  "configuration.civil_custom_regions.ftb_chunks_overlay.fillAlpha": "填充透明度",
+  "configuration.civil_custom_regions.ftb_chunks_overlay.fillAlpha.tooltip": "叠加层填充透明度，范围 0-255。",
+  "configuration.civil_custom_regions.ftb_chunks_overlay.borderAlpha": "边框透明度",
+  "configuration.civil_custom_regions.ftb_chunks_overlay.borderAlpha.tooltip": "叠加层边框透明度，范围 0-255。"
+}

@@ -1,0 +1,18 @@
+{
+  "configuration.civil_custom_regions.ftb_chunks_overlay": "FTB Chunks Overlay",
+  "configuration.civil_custom_regions.ftb_chunks_overlay.tooltip": "Optional FTB Chunks map overlays for Civillis civilization chunks and custom regions.",
+  "configuration.civil_custom_regions.ftb_chunks_overlay.largeMapEnabled": "Large Map Enabled",
+  "configuration.civil_custom_regions.ftb_chunks_overlay.largeMapEnabled.tooltip": "Draw Civillis and custom region overlays on the FTB Chunks large map.",
+  "configuration.civil_custom_regions.ftb_chunks_overlay.minimapEnabled": "Minimap Enabled",
+  "configuration.civil_custom_regions.ftb_chunks_overlay.minimapEnabled.tooltip": "Draw Civillis and custom region overlays on the FTB Chunks minimap.",
+  "configuration.civil_custom_regions.ftb_chunks_overlay.defaultCustomColor": "Default Custom Color",
+  "configuration.civil_custom_regions.ftb_chunks_overlay.defaultCustomColor.tooltip": "Default RRGGBB or #RRGGBB color for custom regions without a per-region overlay color.",
+  "configuration.civil_custom_regions.ftb_chunks_overlay.civilizedHighColor": "Civilization Color",
+  "configuration.civil_custom_regions.ftb_chunks_overlay.civilizedHighColor.tooltip": "Default RRGGBB or #RRGGBB color for Civillis civilization chunks.",
+  "configuration.civil_custom_regions.ftb_chunks_overlay.civilizedHighLabel": "Civilization Label",
+  "configuration.civil_custom_regions.ftb_chunks_overlay.civilizedHighLabel.tooltip": "Large map hover label for Civillis civilization chunks.",
+  "configuration.civil_custom_regions.ftb_chunks_overlay.fillAlpha": "Fill Alpha",
+  "configuration.civil_custom_regions.ftb_chunks_overlay.fillAlpha.tooltip": "Overlay fill alpha, 0-255.",
+  "configuration.civil_custom_regions.ftb_chunks_overlay.borderAlpha": "Border Alpha",
+  "configuration.civil_custom_regions.ftb_chunks_overlay.borderAlpha.tooltip": "Overlay border alpha, 0-255."
+}

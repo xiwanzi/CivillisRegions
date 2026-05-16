@@ -33,7 +33,6 @@ import java.util.List;
 public final class FtbChunkOverlayRenderer {
     private static final int REGION_SIZE_CHUNKS = 32;
     private static final byte CIVILIZED_HIGH = 3;
-    private static final byte CIVILIZED_MONSTER = 4;
 
     private FtbChunkOverlayRenderer() {}
 
@@ -90,7 +89,7 @@ public final class FtbChunkOverlayRenderer {
 
         byte band = ChunkBandClientCache.getBand(dimension.toString(), chunkX, chunkZ);
         if (isCivilizedOverlayBand(band)) {
-            tooltip.add(Component.literal(band == CIVILIZED_MONSTER ? "Civillis MONSTER" : "Civillis HIGH"));
+            tooltip.add(Component.literal(civilizedLabel()));
         }
     }
 
@@ -140,7 +139,7 @@ public final class FtbChunkOverlayRenderer {
                 if (!isCivilizedOverlayBand(band) || isFtbClaimed(mapDimension, chunkX, chunkZ)) {
                     continue;
                 }
-                drawChunkLocal(graphics, chunkX, chunkZ, playerChunkX, playerChunkZ, pixelsPerChunk, colorForBand(band), clip);
+                drawChunkLocal(graphics, chunkX, chunkZ, playerChunkX, playerChunkZ, pixelsPerChunk, civilizationColor(), clip);
                 drawCivilChunkLocalBorder(
                         graphics,
                         mapDimension,
@@ -188,7 +187,7 @@ public final class FtbChunkOverlayRenderer {
                 if (!isCivilizedOverlayBand(band) || isFtbClaimed(mapRegion, chunkX, chunkZ)) {
                     continue;
                 }
-                drawChunk(graphics, x, y, width, height, localX, localZ, colorForBand(band));
+                drawChunk(graphics, x, y, width, height, localX, localZ, civilizationColor());
             }
         }
 
@@ -348,7 +347,7 @@ public final class FtbChunkOverlayRenderer {
         int x2 = chunkEdge(x, width, localX + 1);
         int y1 = chunkEdge(y, height, localZ);
         int y2 = chunkEdge(y, height, localZ + 1);
-        drawCivilEdges(graphics, mapRegion, dimensionId, chunkX, chunkZ, band, x1, y1, x2, y2, colorForBand(band));
+        drawCivilEdges(graphics, mapRegion, dimensionId, chunkX, chunkZ, band, x1, y1, x2, y2, civilizationColor());
     }
 
     private static void drawCivilChunkLocalBorder(
@@ -366,7 +365,7 @@ public final class FtbChunkOverlayRenderer {
         float x2 = (float) (((chunkX + 1) - playerChunkX) * pixelsPerChunk);
         float y1 = (float) ((chunkZ - playerChunkZ) * pixelsPerChunk);
         float y2 = (float) (((chunkZ + 1) - playerChunkZ) * pixelsPerChunk);
-        drawCivilEdges(graphics, mapDimension, dimensionId, chunkX, chunkZ, band, x1, y1, x2, y2, colorForBand(band), clip);
+        drawCivilEdges(graphics, mapDimension, dimensionId, chunkX, chunkZ, band, x1, y1, x2, y2, civilizationColor(), clip);
     }
 
     private static void drawCivilEdges(
@@ -608,13 +607,15 @@ public final class FtbChunkOverlayRenderer {
     }
 
     private static boolean isCivilizedOverlayBand(byte band) {
-        return band == CIVILIZED_HIGH || band == CIVILIZED_MONSTER;
+        return band == CIVILIZED_HIGH;
     }
 
-    private static int colorForBand(byte band) {
-        return band == CIVILIZED_MONSTER
-                ? ClientOverlayConfig.civilizedMonsterRgb()
-                : ClientOverlayConfig.civilizedHighRgb();
+    private static int civilizationColor() {
+        return ClientOverlayConfig.civilizedHighRgb();
+    }
+
+    private static String civilizedLabel() {
+        return ClientOverlayConfig.civilizedHighLabel();
     }
 
     private static int colorForCustom(CustomRegion region) {

@@ -39,19 +39,22 @@ Region ids must match `[a-z0-9_-]+`.
 
 When FTB Chunks `2001.3.6` and FTB Library `2001.2.10` are installed, this addon draws map overlays for:
 
-- Civillis synchronized `HIGH` and `MONSTER` civilization chunks.
+- Civillis synchronized civilization chunks.
 - Custom `/civil create` regions.
 
-Wilderness, unknown, low, and medium Civillis bands are not drawn. Custom regions are drawn above Civillis bands, while FTB claimed chunks stay visually above this addon overlay. Map text is only shown in the large-map hover tooltip; normal map rendering shows color blocks and borders only.
+Wilderness, unknown, low, medium, and monster Civillis bands are not drawn. Custom regions are drawn above Civillis civilization chunks, while FTB claimed chunks stay visually above this addon overlay. Map text is only shown in the large-map hover tooltip; normal map rendering shows color blocks and borders only.
 
 Client config is written under Forge's client config folder and includes:
 
 - `largeMapEnabled`, default `false`
 - `minimapEnabled`, default `false`
-- default custom, high, and monster colors, all low-saturation light gray by default
+- default custom and civilization colors, both low-saturation light gray by default
+- large-map hover label for civilization chunks, defaulting to `文明区域`
 - fill and border alpha values
 
 The minimap overlay only draws color blocks and borders; it never draws text.
+
+When upgrading from earlier 1.1.0 builds, the old yellow/purple/pink default overlay colors are automatically migrated to the new light gray default. User-chosen non-legacy colors are left unchanged.
 
 ### Build
 
@@ -94,19 +97,22 @@ Civillis 1.3.2 的 Forge 1.20.1 扩展模组。本模组不会替代 Civillis，
 
 安装 FTB Chunks `2001.3.6` 和 FTB Library `2001.2.10` 后，本扩展会在地图上显示：
 
-- Civillis 同步的 `HIGH` 和 `MONSTER` 文明区块。
+- Civillis 同步的文明区块。
 - 本模组 `/civil create` 创建的自定义区域。
 
-荒野、未知、低/中文明 band 不显示。自定义区域会画在 Civillis 文明区之上，但 FTB Chunks 自身的 claimed chunk 视觉优先级更高，不会被本叠加层盖住。地图文字只在大地图鼠标悬停 tooltip 中显示，正常地图渲染只显示色块和边框。
+荒野、未知、低/中等级和 MONSTER band 不显示。自定义区域会画在 Civillis 文明区之上，但 FTB Chunks 自身的 claimed chunk 视觉优先级更高，不会被本叠加层盖住。地图文字只在大地图鼠标悬停 tooltip 中显示，正常地图渲染只显示色块和边框。
 
 Forge 客户端配置包含：
 
 - `largeMapEnabled`，默认关闭
 - `minimapEnabled`，默认关闭
-- 自定义区域、HIGH、MONSTER 的默认颜色，默认都是低饱和浅灰色
+- 自定义区域、文明区域的默认颜色，默认都是低饱和浅灰色
+- 文明区块的大地图悬浮字样，默认是 `文明区域`
 - 填充和边框透明度
 
 小地图只显示色块和边框，永远不显示文字。
+
+从早期 1.1.0 构建升级时，旧的黄/紫/粉默认叠加层颜色会自动迁移为新的浅灰默认色。用户手动设置的其他颜色不会被覆盖。
 
 ### 构建
 
