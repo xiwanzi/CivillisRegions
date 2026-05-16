@@ -92,13 +92,21 @@ ftb-library-forge-2001.2.10.jar
 
 所有指令都需要 2 级或更高的游戏管理员权限。区域 id 必须匹配 `[a-z0-9_-]+`。
 
+```mcfunction
+/civil create <id> <pos1> <pos2>
+/civil edit <id> "<进入提示>" "<离开提示>" [RRGGBB] [RRGGBB]
+/civil overlay <id> "<地图显示名>" [RRGGBB]
+/civil list
+/civil delete <id>
+```
+
 | 指令 | 用途 |
 | --- | --- |
-| `/civil create <id> <pos1> <pos2>` | 在当前维度创建自定义区域。 |
-| `/civil edit <id> "<进入提示>" "<离开提示>" [RRGGBB] [RRGGBB]` | 设置进入/离开 HUD 文本和可选颜色。 |
-| `/civil overlay <id> "<地图显示名>" [RRGGBB]` | 设置 FTB Chunks 地图显示名和可选叠加层颜色。 |
+| `/civil create` | 在当前维度创建自定义区域。 |
+| `/civil edit` | 设置进入/离开 HUD 文本和可选颜色。 |
+| `/civil overlay` | 设置 FTB Chunks 地图显示名和可选叠加层颜色。 |
 | `/civil list` | 列出所有自定义区域、范围、颜色和提示状态。 |
-| `/civil delete <id>` | 删除指定自定义区域。 |
+| `/civil delete` | 删除指定自定义区域。 |
 
 ## FTB Chunks 叠加层
 
