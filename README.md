@@ -2,10 +2,10 @@
 
 # Civillis Regions
 
-**Civillis 的 Forge 1.20.1 文明区域扩展**
+**Civillis 的 Forge 1.20.1 附属文明区域扩展**
 
 [![Minecraft 1.20.1](https://img.shields.io/badge/Minecraft-1.20.1-62b47a?style=for-the-badge)](https://www.minecraft.net/)
-[![Forge 47.2.0+](https://img.shields.io/badge/Forge-47.2.0+-f16436?style=for-the-badge)](https://files.minecraftforge.net/net/minecraftforge/forge/)
+[![Forge 1.20.1 Only](https://img.shields.io/badge/Forge-1.20.1%20Only-f16436?style=for-the-badge)](https://files.minecraftforge.net/net/minecraftforge/forge/)
 [![Civillis 1.3.2+](https://img.shields.io/badge/Civillis-1.3.2+-4b6cb7?style=for-the-badge)](#安装)
 [![FTB Chunks Optional](https://img.shields.io/badge/FTB%20Chunks-Optional-8e7cc3?style=for-the-badge)](#ftb-chunks-叠加层)
 [![Release](https://img.shields.io/github/v/release/xiwanzi/CivillisRegions?style=for-the-badge&label=Release)](https://github.com/xiwanzi/CivillisRegions/releases/latest)
@@ -16,12 +16,12 @@
 
 ## 简介
 
-Civillis Regions 是适用于主模组 **Civillis** 的 Forge 1.20.1 副属模组。它提供自定义区域的 HUD 显示，并对 **FTB Chunks** 的 Civillis 文明区域与自定义区域地图叠加层提供初步兼容。
+Civillis Regions 是适用于主模组 **Civillis** 的 Forge 1.20.1 附属模组。它提供自定义区域的 HUD 显示，并对 **FTB Chunks** 的 Civillis 文明区域与自定义区域地图叠加层提供初步兼容。
 
 当前版本专注于：
 
 - 创建服务器自定义区域，并在玩家进入或离开时显示 HUD 提示。
-- 为自定义区域设置地图显示名和颜色。
+- 为自定义区域设置地图显示名和可选颜色。
 - 在 FTB Chunks 大地图/小地图上显示 Civillis 文明区域与自定义区域叠加层。
 
 ## 安装
@@ -34,10 +34,10 @@ civillis-regions-forge-1.20.1-1.1.0.jar
 
 也可以从 [Modrinth](https://modrinth.com/mod/civillisregions) 备用下载；该页面可能不会第一时间同步最新版本，请以 GitHub Releases 为准。
 
-必须同时安装主模组：
+本模组仅支持 **Forge 1.20.1**。必须同时安装主模组，Civillis 版本需求为：
 
 ```text
-civillis-forge-1.3.2-release+mc1.20.1.jar
+civillis-forge-1.3.2+
 ```
 
 FTB Chunks 叠加层是可选功能。需要地图叠加层时，请额外安装：
@@ -53,10 +53,10 @@ ftb-library-forge-2001.2.10.jar
 
 ### 1. 创建自定义区域
 
-站在目标维度内，用两个方块坐标圈出区域范围：
+站在目标维度内，用两个方块坐标圈出区域范围。这里的 `x y z` 是坐标占位符：
 
 ```mcfunction
-/civil create spawn ~ ~ ~ ~64 ~ ~64
+/civil create spawn <x1> <y1> <z1> <x2> <y2> <z2>
 ```
 
 模组会记录当前维度，并按两个坐标覆盖到的区块 X/Z 范围保存区域。Y 坐标不会影响区域高度。
@@ -69,11 +69,11 @@ ftb-library-forge-2001.2.10.jar
 /civil edit spawn "进入主城区域" "离开主城区域" d8dcdd d8dcdd
 ```
 
-颜色使用 `RRGGBB` 或 `#RRGGBB`。只填一个颜色时进入和离开共用该颜色，填两个颜色时分别设置进入和离开颜色。
+颜色是可选配置，格式为 `RRGGBB` 或 `#RRGGBB`。不填写颜色时使用默认 HUD 颜色；只填一个颜色时进入和离开共用该颜色，填两个颜色时分别设置进入和离开颜色。
 
 ### 3. 设置地图叠加层
 
-如果安装了 FTB Chunks，可以给自定义区域设置地图显示名和叠加层颜色：
+如果安装了 FTB Chunks，可以给自定义区域设置地图显示名，并可选设置叠加层颜色：
 
 ```mcfunction
 /civil overlay spawn "主城区域" d8dcdd
@@ -93,7 +93,7 @@ ftb-library-forge-2001.2.10.jar
 所有指令都需要 2 级或更高的游戏管理员权限。区域 id 必须匹配 `[a-z0-9_-]+`。
 
 ```mcfunction
-/civil create <id> <pos1> <pos2>
+/civil create <id> <x1> <y1> <z1> <x2> <y2> <z2>
 /civil edit <id> "<进入提示>" "<离开提示>" [RRGGBB] [RRGGBB]
 /civil overlay <id> "<地图显示名>" [RRGGBB]
 /civil list
