@@ -1,123 +1,127 @@
+<div align="center">
+
 # Civillis Regions
 
-English | [中文](#中文)
+**Civillis 的 Forge 1.20.1 文明区域扩展**
 
-Forge 1.20.1 addon for Civillis that adds custom rectangular regions, configurable enter/leave HUD notices, and optional FTB Chunks map overlays for Civillis civilization bands and custom regions.
+[![Minecraft 1.20.1](https://img.shields.io/badge/Minecraft-1.20.1-62b47a?style=for-the-badge)](https://www.minecraft.net/)
+[![Forge 47.2.0+](https://img.shields.io/badge/Forge-47.2.0+-f16436?style=for-the-badge)](https://files.minecraftforge.net/net/minecraftforge/forge/)
+[![Civillis 1.3.2+](https://img.shields.io/badge/Civillis-1.3.2+-4b6cb7?style=for-the-badge)](#安装)
+[![FTB Chunks Optional](https://img.shields.io/badge/FTB%20Chunks-Optional-8e7cc3?style=for-the-badge)](#ftb-chunks-叠加层)
+[![Release](https://img.shields.io/github/v/release/xiwanzi/CivillisRegions?style=for-the-badge&label=Release)](https://github.com/xiwanzi/CivillisRegions/releases/latest)
+[![Downloads](https://img.shields.io/github/downloads/xiwanzi/CivillisRegions/total?style=for-the-badge&label=Downloads)](https://github.com/xiwanzi/CivillisRegions/releases)
+[![Modrinth](https://img.shields.io/badge/Modrinth-备用下载-00af5c?style=for-the-badge)](https://modrinth.com/mod/civillisregions)
 
-适用于 Civillis 的 Forge 1.20.1 附属模组，提供自定义矩形区域、可配置的进出 HUD 提示，以及可选的 FTB Chunks 文明区域与自定义区域地图叠加层。
+</div>
 
-## English
+## 简介
 
-Forge 1.20.1 addon for Civillis 1.3.2. This mod does not replace Civillis; install it together with:
+Civillis Regions 是适用于主模组 **Civillis** 的 Forge 1.20.1 副属模组。它提供自定义区域的 HUD 显示，并对 **FTB Chunks** 的 Civillis 文明区域与自定义区域地图叠加层提供初步兼容。
 
-- `civillis-forge-1.3.2-release+mc1.20.1.jar`
-- `civillis-regions-forge-1.20.1-1.1.0.jar`
+当前版本专注于：
 
-The packaged 1.1.0 jar is included in `releases/`.
+- 创建服务器自定义区域，并在玩家进入或离开时显示 HUD 提示。
+- 为自定义区域设置地图显示名和颜色。
+- 在 FTB Chunks 大地图/小地图上显示 Civillis 文明区域与自定义区域叠加层。
 
-### Commands
+## 安装
 
-All commands require game-master permission level 2 or higher.
+优先从 [GitHub Releases](https://github.com/xiwanzi/CivillisRegions/releases/latest) 下载最新文件：
+
+```text
+civillis-regions-forge-1.20.1-1.1.0.jar
+```
+
+也可以从 [Modrinth](https://modrinth.com/mod/civillisregions) 备用下载；该页面可能不会第一时间同步最新版本，请以 GitHub Releases 为准。
+
+必须同时安装主模组：
+
+```text
+civillis-forge-1.3.2-release+mc1.20.1.jar
+```
+
+FTB Chunks 叠加层是可选功能。需要地图叠加层时，请额外安装：
+
+```text
+ftb-chunks-forge-2001.3.6.jar
+ftb-library-forge-2001.2.10.jar
+```
+
+不安装 FTB Chunks 时，自定义区域指令和 HUD 提示仍可正常使用。
+
+## 使用教程
+
+### 1. 创建自定义区域
+
+站在目标维度内，用两个方块坐标圈出区域范围：
 
 ```mcfunction
-/civil create <id> <pos1> <pos2>
-/civil edit <id> "<enter text>" "<leave text>" [RRGGBB] [RRGGBB]
-/civil overlay <id> "<display name>" [RRGGBB]
-/civil list
-/civil delete <id>
+/civil create spawn ~ ~ ~ ~64 ~ ~64
 ```
 
-`create` stores the executor's current dimension and the chunk X/Z rectangle covered by the two block positions. Y is ignored. A created region does not show HUD notices until `edit` sets at least one notice text.
+模组会记录当前维度，并按两个坐标覆盖到的区块 X/Z 范围保存区域。Y 坐标不会影响区域高度。
 
-`edit` can optionally set enter/leave notice colors. One color applies to both notices; two colors set enter and leave separately.
+### 2. 设置进入/离开 HUD
 
-`overlay` sets the label and optional overlay color used by FTB Chunks maps. Colors accept `RRGGBB` or `#RRGGBB`; command examples should usually omit `#`, for example `d9e6ff`.
-
-Region ids must match `[a-z0-9_-]+`.
-
-### FTB Chunks Overlay
-
-When FTB Chunks `2001.3.6` and FTB Library `2001.2.10` are installed, this addon draws map overlays for:
-
-- Civillis synchronized civilization chunks.
-- Custom `/civil create` regions.
-
-Wilderness, unknown, low, medium, and monster Civillis bands are not drawn. Custom regions are drawn above Civillis civilization chunks, while FTB claimed chunks stay visually above this addon overlay. Map text is only shown in the large-map hover tooltip; normal map rendering shows color blocks and borders only.
-
-Client config is written under Forge's client config folder and includes:
-
-- `largeMapEnabled`, default `false`
-- `minimapEnabled`, default `false`
-- default custom and civilization colors, both low-saturation light gray by default
-- large-map hover label for civilization chunks, defaulting to `文明区域`
-- fill and border alpha values
-
-The minimap overlay only draws color blocks and borders; it never draws text.
-
-When upgrading from earlier 1.1.0 builds, the old yellow/purple/pink default overlay colors are automatically migrated to the new light gray default. User-chosen non-legacy colors are left unchanged.
-
-### Build
-
-```powershell
-.\gradlew.bat build
-```
-
-The built jar is written to `build/libs/`.
-
-## 中文
-
-Civillis 1.3.2 的 Forge 1.20.1 扩展模组。本模组不会替代 Civillis，需要和以下文件一起安装：
-
-- `civillis-forge-1.3.2-release+mc1.20.1.jar`
-- `civillis-regions-forge-1.20.1-1.1.0.jar`
-
-仓库内已附带 1.1.0 jar，位置在 `releases/`。
-
-### 指令
-
-所有指令都需要 2 级或更高的游戏管理员权限。
+新建区域默认不会显示 HUD，至少需要设置一条进入或离开提示：
 
 ```mcfunction
-/civil create <id> <pos1> <pos2>
-/civil edit <id> "<进入提示文本>" "<离开提示文本>" [RRGGBB] [RRGGBB]
-/civil overlay <id> "<地图显示名>" [RRGGBB]
-/civil list
-/civil delete <id>
+/civil edit spawn "进入主城区域" "离开主城区域" d8dcdd d8dcdd
 ```
 
-`create` 会记录执行者当前所在维度，并保存两个方块坐标覆盖到的区块 X/Z 矩形范围。Y 坐标会被忽略。新建区域在通过 `edit` 设置至少一条提示文本前，不会显示 HUD 提示。
+颜色使用 `RRGGBB` 或 `#RRGGBB`。只填一个颜色时进入和离开共用该颜色，填两个颜色时分别设置进入和离开颜色。
 
-`edit` 可以额外设置进入/离开提示颜色。只填一个颜色时进入和离开共用该颜色，填两个颜色时分别设置进入和离开颜色。
+### 3. 设置地图叠加层
 
-`overlay` 用于设置 FTB Chunks 地图上的显示名和可选叠加层颜色。颜色接受 `RRGGBB` 或 `#RRGGBB`；命令示例建议省略 `#`，例如 `d9e6ff`。
+如果安装了 FTB Chunks，可以给自定义区域设置地图显示名和叠加层颜色：
 
-区域 id 必须匹配 `[a-z0-9_-]+`。
-
-### FTB Chunks 叠加层
-
-安装 FTB Chunks `2001.3.6` 和 FTB Library `2001.2.10` 后，本扩展会在地图上显示：
-
-- Civillis 同步的文明区块。
-- 本模组 `/civil create` 创建的自定义区域。
-
-荒野、未知、低/中等级和 MONSTER band 不显示。自定义区域会画在 Civillis 文明区之上，但 FTB Chunks 自身的 claimed chunk 视觉优先级更高，不会被本叠加层盖住。地图文字只在大地图鼠标悬停 tooltip 中显示，正常地图渲染只显示色块和边框。
-
-Forge 客户端配置包含：
-
-- `largeMapEnabled`，默认关闭
-- `minimapEnabled`，默认关闭
-- 自定义区域、文明区域的默认颜色，默认都是低饱和浅灰色
-- 文明区块的大地图悬浮字样，默认是 `文明区域`
-- 填充和边框透明度
-
-小地图只显示色块和边框，永远不显示文字。
-
-从早期 1.1.0 构建升级时，旧的黄/紫/粉默认叠加层颜色会自动迁移为新的浅灰默认色。用户手动设置的其他颜色不会被覆盖。
-
-### 构建
-
-```powershell
-.\gradlew.bat build
+```mcfunction
+/civil overlay spawn "主城区域" d8dcdd
 ```
 
-构建后的 jar 会输出到 `build/libs/`。
+### 4. 启用地图叠加层
+
+在配置菜单中开启大地图或小地图叠加层后，FTB Chunks 地图会显示：
+
+- Civillis 同步的文明区域。
+- 通过 `/civil create` 创建的自定义区域。
+
+自定义区域会画在 Civillis 文明区域之上；FTB Chunks 自身的 claimed chunks 仍保持更高的视觉优先级。小地图只显示色块和边框，不显示文字；大地图文字只在鼠标悬停提示中显示。
+
+## 指令
+
+所有指令都需要 2 级或更高的游戏管理员权限。区域 id 必须匹配 `[a-z0-9_-]+`。
+
+| 指令 | 用途 |
+| --- | --- |
+| `/civil create <id> <pos1> <pos2>` | 在当前维度创建自定义区域。 |
+| `/civil edit <id> "<进入提示>" "<离开提示>" [RRGGBB] [RRGGBB]` | 设置进入/离开 HUD 文本和可选颜色。 |
+| `/civil overlay <id> "<地图显示名>" [RRGGBB]` | 设置 FTB Chunks 地图显示名和可选叠加层颜色。 |
+| `/civil list` | 列出所有自定义区域、范围、颜色和提示状态。 |
+| `/civil delete <id>` | 删除指定自定义区域。 |
+
+## FTB Chunks 叠加层
+
+安装 FTB Chunks `2001.3.6` 与 FTB Library `2001.2.10` 后，叠加层会读取 Civillis 同步的文明区块和本模组保存的自定义区域。
+
+当前不会绘制荒野、未知、低等级、中等级和 MONSTER band。自定义区域未单独设置颜色时，会使用配置菜单里的默认自定义区域颜色。
+
+## 配置菜单
+
+配置属于 Forge 客户端配置。可以通过 Configured 的模组配置菜单修改，也可以直接编辑客户端配置文件：
+
+```text
+config/civil_custom_regions-client.toml
+```
+
+| 配置项 | 默认值 | 说明 |
+| --- | --- | --- |
+| `largeMapEnabled` | `false` | 是否在 FTB Chunks 大地图绘制 Civillis/自定义区域叠加层。 |
+| `minimapEnabled` | `false` | 是否在 FTB Chunks 小地图绘制 Civillis/自定义区域叠加层。 |
+| `defaultCustomColor` | `#d8dcdd` | 没有单独设置颜色的自定义区域默认颜色。 |
+| `civilizedHighColor` | `#d8dcdd` | Civillis 文明区域默认颜色。 |
+| `civilizedHighLabel` | `文明区域` | 大地图鼠标悬停在 Civillis 文明区域上时显示的文字。 |
+| `fillAlpha` | `56` | 叠加层填充透明度，范围 `0-255`。 |
+| `borderAlpha` | `168` | 叠加层边框透明度，范围 `0-255`。 |
+
+从早期 1.1.0 构建升级时，旧的黄/紫/粉默认叠加层颜色会自动迁移为浅灰默认值。玩家手动设置的其他颜色不会被覆盖。
