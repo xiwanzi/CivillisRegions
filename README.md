@@ -66,7 +66,7 @@ ftb-library-2001.2.10+
 新建区域默认不会显示 HUD，至少需要设置一条进入或离开提示：
 
 ```mcfunction
-/civil edit spawn "进入主城区域" "离开主城区域" d8dcdd d8dcdd
+/civil edit spawn "进入主城区域" "离开主城区域" [RRGGBB] [RRGGBB]
 ```
 
 颜色是可选配置，格式为 `RRGGBB` 或 `#RRGGBB`。不填写颜色时使用默认 HUD 颜色；只填一个颜色时进入和离开共用该颜色，填两个颜色时分别设置进入和离开颜色。
@@ -76,7 +76,7 @@ ftb-library-2001.2.10+
 如果安装了 FTB Chunks，可以给自定义区域设置地图显示名，并可选设置叠加层颜色：
 
 ```mcfunction
-/civil overlay spawn "主城区域" d8dcdd
+/civil overlay spawn "地图显示名称" [RRGGBB]
 ```
 
 ### 4. 启用地图叠加层
