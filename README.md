@@ -43,8 +43,8 @@ civillis-forge-1.3.2+
 FTB Chunks 叠加层是可选功能。需要地图叠加层时，请额外安装：
 
 ```text
-ftb-chunks-forge-2001.3.6.jar
-ftb-library-forge-2001.2.10.jar
+ftb-chunks-2001.3.6+
+ftb-library-2001.2.10+
 ```
 
 不安装 FTB Chunks 时，自定义区域指令和 HUD 提示仍可正常使用。
