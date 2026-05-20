@@ -26,6 +26,7 @@ public final class CustomRegionNoticeHud {
     private static Component currentText = Component.empty();
     private static NoticeKind currentKind = NoticeKind.ENTER;
     private static int currentColor = -1;
+    private static float currentScale = 1.0F;
     private static int ticksRemaining;
 
     private static Field civillisTicksRemainingField;
@@ -41,10 +42,14 @@ public final class CustomRegionNoticeHud {
     }
 
     public static void enqueue(NoticeKind kind, String text, int color) {
+        enqueue(kind, text, color, 1.0D);
+    }
+
+    public static void enqueue(NoticeKind kind, String text, int color, double scale) {
         if (text == null || text.isBlank()) {
             return;
         }
-        QUEUE.addLast(new Notice(kind, Component.literal(text), color));
+        QUEUE.addLast(new Notice(kind, Component.literal(text), color, clampScale(scale)));
     }
 
     public static void tick() {
@@ -56,6 +61,7 @@ public final class CustomRegionNoticeHud {
             currentKind = next.kind();
             currentText = next.text();
             currentColor = next.color();
+            currentScale = next.scale();
             ticksRemaining = FADE_IN_TICKS + HOLD_TICKS + FADE_OUT_TICKS;
         }
     }
@@ -99,11 +105,14 @@ public final class CustomRegionNoticeHud {
         int barCenterBias = Math.round(textHeight * BAR_CENTER_Y_BIAS_RATIO);
         barCenterBias = clampInt(barCenterBias, -4, -1);
 
-        int x = anchorX - textWidth / 2;
-        int y = alignBaselineToHudCenterY(anchorY, textHeight, barCenterBias);
+        int x = -textWidth / 2;
+        int y = alignBaselineToHudCenterY(0, textHeight, barCenterBias);
 
         int rgb = currentColor >= 0 ? currentColor : (currentKind == NoticeKind.ENTER ? ENTER_RGB : LEAVE_RGB);
         int color = ((int) (alpha * 255.0f) << 24) | rgb;
+        guiGraphics.pose().pushPose();
+        guiGraphics.pose().translate(anchorX, anchorY, 0.0F);
+        guiGraphics.pose().scale(currentScale, currentScale, 1.0F);
         guiGraphics.drawString(mc.font, currentText, x, y, color, true);
 
         float inEased = easeOutCubic(inPhase);
@@ -133,6 +142,7 @@ public final class CustomRegionNoticeHud {
         guiGraphics.fill(rightX + 1, rightY1 + 1, rightX + BAR_WIDTH + 1, rightY1 + BAR_HEIGHT + 1, barShadowColor);
         guiGraphics.fill(leftX, leftY1, leftX + BAR_WIDTH, leftY1 + BAR_HEIGHT, barColor);
         guiGraphics.fill(rightX, rightY1, rightX + BAR_WIDTH, rightY1 + BAR_HEIGHT, barColor);
+        guiGraphics.pose().popPose();
     }
 
     private static boolean isCivillisZoneHudVisible() {
@@ -223,6 +233,13 @@ public final class CustomRegionNoticeHud {
         return Math.max(min, Math.min(max, value));
     }
 
+    private static float clampScale(double value) {
+        if (!Double.isFinite(value)) {
+            return 1.0F;
+        }
+        return (float) Math.max(0.5D, Math.min(3.0D, value));
+    }
+
     private static int hudClusterCenterY(int baselineY, int textHeight, int barCenterBias) {
         int k = (textHeight - BAR_HEIGHT) / 2 + barCenterBias;
         int baseBarY = baselineY + k;
@@ -238,5 +255,5 @@ public final class CustomRegionNoticeHud {
         return baseline + (targetCenterY - actual);
     }
 
-    private record Notice(NoticeKind kind, Component text, int color) {}
+    private record Notice(NoticeKind kind, Component text, int color, float scale) {}
 }

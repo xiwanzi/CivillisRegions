@@ -168,6 +168,22 @@ public final class CustomRegion {
                 leaveColor);
     }
 
+    public CustomRegion withBounds(int newMinChunkX, int newMaxChunkX, int newMinChunkZ, int newMaxChunkZ) {
+        return new CustomRegion(
+                id,
+                dimension,
+                newMinChunkX,
+                newMaxChunkX,
+                newMinChunkZ,
+                newMaxChunkZ,
+                enterText,
+                leaveText,
+                displayName,
+                overlayColor,
+                enterColor,
+                leaveColor);
+    }
+
     public CompoundTag save() {
         CompoundTag tag = new CompoundTag();
         tag.putString("id", id);

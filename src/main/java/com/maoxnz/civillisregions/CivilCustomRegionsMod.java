@@ -2,6 +2,7 @@ package com.maoxnz.civillisregions;
 
 import com.maoxnz.civillisregions.net.ModNetwork;
 import com.maoxnz.civillisregions.config.ClientOverlayConfig;
+import com.maoxnz.civillisregions.config.ServerNoticeConfig;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.config.ModConfig;
@@ -12,6 +13,7 @@ public final class CivilCustomRegionsMod {
 
     public CivilCustomRegionsMod() {
         ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, ClientOverlayConfig.SPEC);
+        ModLoadingContext.get().registerConfig(ModConfig.Type.SERVER, ServerNoticeConfig.SPEC);
         ModNetwork.register();
     }
 }

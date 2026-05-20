@@ -14,5 +14,9 @@
   "configuration.civil_custom_regions.ftb_chunks_overlay.fillAlpha": "填充透明度",
   "configuration.civil_custom_regions.ftb_chunks_overlay.fillAlpha.tooltip": "叠加层填充透明度，范围 0-255。",
   "configuration.civil_custom_regions.ftb_chunks_overlay.borderAlpha": "边框透明度",
-  "configuration.civil_custom_regions.ftb_chunks_overlay.borderAlpha.tooltip": "叠加层边框透明度，范围 0-255。"
+  "configuration.civil_custom_regions.ftb_chunks_overlay.borderAlpha.tooltip": "叠加层边框透明度，范围 0-255。",
+  "configuration.civil_custom_regions.hud": "HUD 提示",
+  "configuration.civil_custom_regions.hud.tooltip": "由服务器控制的 HUD 提示设置。",
+  "configuration.civil_custom_regions.hud.noticeScale": "提示大小",
+  "configuration.civil_custom_regions.hud.noticeScale.tooltip": "自定义区域进入/离开 HUD 提示缩放。1.0 是旧版大小。"
 }

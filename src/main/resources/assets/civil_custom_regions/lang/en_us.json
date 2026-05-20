@@ -14,5 +14,9 @@
   "configuration.civil_custom_regions.ftb_chunks_overlay.fillAlpha": "Fill Alpha",
   "configuration.civil_custom_regions.ftb_chunks_overlay.fillAlpha.tooltip": "Overlay fill alpha, 0-255.",
   "configuration.civil_custom_regions.ftb_chunks_overlay.borderAlpha": "Border Alpha",
-  "configuration.civil_custom_regions.ftb_chunks_overlay.borderAlpha.tooltip": "Overlay border alpha, 0-255."
+  "configuration.civil_custom_regions.ftb_chunks_overlay.borderAlpha.tooltip": "Overlay border alpha, 0-255.",
+  "configuration.civil_custom_regions.hud": "HUD Notices",
+  "configuration.civil_custom_regions.hud.tooltip": "Server-controlled HUD notice settings.",
+  "configuration.civil_custom_regions.hud.noticeScale": "Notice Scale",
+  "configuration.civil_custom_regions.hud.noticeScale.tooltip": "Scale for custom region enter/leave HUD notices. 1.0 is the old size."
 }
